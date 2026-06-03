@@ -1,0 +1,7 @@
+=== Résultats TER — Détection GPS Spoofing ===
+
+Accuracy           : 94.55%
+Taux de détection  : 89.70%
+Taux fausse alarme : 0.60%
+Précision          : 99.34%
+AUC                : 0.9918

@@ -1,0 +1,7 @@
+pgmpy>=1.1
+numpy
+pandas
+openpyxl
+matplotlib
+scikit-learn
+seaborn
