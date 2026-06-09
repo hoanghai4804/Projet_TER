@@ -15,15 +15,15 @@ from pgmpy.inference import VariableElimination
 
 def predict_proba(inference, df):
     """
-    Chạy inference trên toàn bộ dataset.
-    Trả về xác suất P(S=1) cho mỗi hàng.
+    Exécute l'inférence sur l'ensemble du dataset.
+    Retourne la probabilité P(S=1) pour chaque ligne.
     """
 
-    probas = []  # Danh sách xác suất P(S=1)
+    probas = []  # Liste des probabilités P(S=1)
 
     for i, row in df.iterrows():
 
-        # Đọc 4 biến quan sát của hàng này
+        # Lire les 4 variables observées de cette ligne
         evidence = {
             "C": int(row["C"]),
             "D": int(row["D"]),
@@ -31,18 +31,18 @@ def predict_proba(inference, df):
             "P": int(row["P"])
         }
 
-        # Hỏi mô hình: P(S | C=?, D=?, A=?, P=?)
+        # Interroger le modèle : P(S | C=?, D=?, A=?, P=?)
         result = inference.query(
             variables=["S"],
             evidence=evidence,
-            show_progress=False  # Tắt progress bar
+            show_progress=False
         )
 
-        # Lấy P(S=1) — xác suất bị tấn công
+        # Récupérer P(S=1) — probabilité d'attaque
         prob_attack = result.values[1]
         probas.append(prob_attack)
 
-        # In tiến độ mỗi 200 hàng
+        # Afficher la progression toutes les 200 lignes
         if (i + 1) % 200 == 0:
             print(f"   Traitement : {i+1}/{ len(df)} échantillons...")
 
@@ -51,11 +51,11 @@ def predict_proba(inference, df):
 
 def evaluate(y_true, y_pred, y_proba):
     """
-    Tính tất cả các metrics đánh giá mô hình.
+    Calcule toutes les métriques d'évaluation du modèle.
 
-    y_true  → nhãn thật (S thật)
-    y_pred  → nhãn dự đoán (0 hoặc 1)
-    y_proba → xác suất P(S=1) cho mỗi hàng
+    y_true  → vraies étiquettes (S réel)
+    y_pred  → étiquettes prédites (0 ou 1)
+    y_proba → probabilité P(S=1) pour chaque ligne
     """
 
     print("\n=== Résultats de l'évaluation ===\n")
@@ -66,10 +66,10 @@ def evaluate(y_true, y_pred, y_proba):
 
     # ── Confusion Matrix ──────────────────────
     cm = confusion_matrix(y_true, y_pred)
-    TN = cm[0][0]  # Vrai Négatif: bình thường, dự đoán bình thường
-    FP = cm[0][1]  # Faux Positif: bình thường, dự đoán tấn công
-    FN = cm[1][0]  # Faux Négatif: tấn công, dự đoán bình thường
-    TP = cm[1][1]  # Vrai Positif: tấn công, dự đoán tấn công
+    TN = cm[0][0]  # Vrai Négatif : normal, prédit normal
+    FP = cm[0][1]  # Faux Positif : normal, prédit attaque
+    FN = cm[1][0]  # Faux Négatif : attaque, prédit normal
+    TP = cm[1][1]  # Vrai Positif : attaque, prédit attaque
 
     print(f"\nMatrice de confusion :")
     print(f"   Vrai Négatif  (TN) : {TN}")
@@ -98,7 +98,6 @@ def evaluate(y_true, y_pred, y_proba):
         target_names=["Normal (S=0)", "Attaque (S=1)"]
     ))
 
-    # Retourner tous les résultats
     return {
         "accuracy"       : acc,
         "detection_rate" : detection_rate,
@@ -115,7 +114,7 @@ def evaluate(y_true, y_pred, y_proba):
 
 
 def save_results(results, path="results/results.txt"):
-    """Lưu kết quả ra file text"""
+    """Sauvegarde les résultats dans un fichier texte."""
     import os
     os.makedirs("results", exist_ok=True)
 
@@ -131,7 +130,7 @@ def save_results(results, path="results/results.txt"):
 
 
 # ─────────────────────────────────────────
-# CHẠY KHI GỌI TRỰC TIẾP FILE NÀY
+# EXÉCUTION DIRECTE DE CE FICHIER
 # ─────────────────────────────────────────
 if __name__ == "__main__":
 

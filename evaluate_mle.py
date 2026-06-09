@@ -55,7 +55,7 @@ def build_model_mle(df_train):
 def plot_comparison_3(r_sim, r_manual, r_mle,
                       save_path="results/comparison_3.png"):
     """
-    Biểu đồ so sánh 3 approches
+    Graphique comparatif des 3 approches.
     """
 
     metrics = ["accuracy", "detection_rate",
@@ -159,17 +159,17 @@ if __name__ == "__main__":
     # ── 3. Dataset réel + CPT MLE ─────────────────
     print("\n[3/4] Approche 3 — Réel + CPT MLE...")
 
-    # Chia train 70% / test 30%
+    # Découpage train 70% / test 30%
     df_train = df_real.sample(frac=0.7, random_state=42)
     df_test  = df_real.drop(df_train.index)
 
     print(f"   Train : {len(df_train)} échantillons")
     print(f"   Test  : {len(df_test)}  échantillons")
 
-    # Học CPT từ train data
+    # Apprentissage des CPT sur les données d'entraînement
     _, inference_mle = build_model_mle(df_train)
 
-    # Test trên test data
+    # Test sur les données de test
     y_proba_mle = predict_proba(inference_mle, df_test)
     y_pred_mle  = (y_proba_mle > 0.5).astype(int)
     r_mle       = evaluate(df_test["S"].values,

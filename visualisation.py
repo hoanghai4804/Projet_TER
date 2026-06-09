@@ -12,8 +12,8 @@ from evaluation import predict_proba, evaluate
 
 def plot_roc_curve(results, save_path="results/roc_curve.png"):
     """
-    Biểu đồ 1 — ROC Curve
-    Thể hiện trade-off giữa detection rate và false alarm rate
+    Graphique 1 — Courbe ROC
+    Illustre le compromis entre taux de détection et taux de fausse alarme.
     """
 
     fpr = results["fpr"]
@@ -22,20 +22,20 @@ def plot_roc_curve(results, save_path="results/roc_curve.png"):
 
     plt.figure(figsize=(8, 6))
 
-    # Đường ROC của mô hình
+    # Courbe ROC du modèle
     plt.plot(fpr, tpr,
              color="steelblue",
              linewidth=2,
              label=f"Réseau Bayésien (AUC = {roc_auc:.4f})")
 
-    # Đường random baseline (AUC = 0.5)
+    # Ligne de référence aléatoire (AUC = 0.5)
     plt.plot([0, 1], [0, 1],
              color="gray",
              linewidth=1,
              linestyle="--",
              label="Classifieur aléatoire (AUC = 0.5)")
 
-    # Điểm tối ưu (threshold = 0.5)
+    # Point de fonctionnement (seuil = 0.5)
     idx = np.argmin(np.abs(results["y_proba"] - 0.5))
     optimal_fpr = fpr[np.argmin(np.abs(tpr - results["detection_rate"]))]
     optimal_tpr = results["detection_rate"]
@@ -62,8 +62,8 @@ def plot_roc_curve(results, save_path="results/roc_curve.png"):
 
 def plot_confusion_matrix(results, save_path="results/confusion_matrix.png"):
     """
-    Biểu đồ 2 — Confusion Matrix
-    Thể hiện số lượng TP, TN, FP, FN
+    Graphique 2 — Matrice de confusion
+    Affiche le nombre de TP, TN, FP, FN.
     """
 
     cm = results["confusion_matrix"]
@@ -94,14 +94,14 @@ def plot_confusion_matrix(results, save_path="results/confusion_matrix.png"):
 
 def plot_probability_distribution(results, save_path="results/distribution.png"):
     """
-    Biểu đồ 3 — Distribution de P(S=1)
-    Thể hiện sự phân tách giữa normal et attaque
+    Graphique 3 — Distribution de P(S=1)
+    Illustre la séparation entre les classes normale et attaque.
     """
 
     y_true  = results["y_true"]
     y_proba = results["y_proba"]
 
-    # Tách xác suất theo nhãn thật
+    # Séparer les probabilités selon la vraie étiquette
     proba_normal = y_proba[y_true == 0]
     proba_attack = y_proba[y_true == 1]
 
@@ -115,7 +115,7 @@ def plot_probability_distribution(results, save_path="results/distribution.png")
              color="tomato", label="Attaque (S=1)",
              edgecolor="white")
 
-    # Đường threshold = 0.5
+    # Ligne du seuil = 0.5
     plt.axvline(x=0.5, color="black",
                 linewidth=2, linestyle="--",
                 label="Seuil de décision = 0.5")
@@ -136,8 +136,8 @@ def plot_probability_distribution(results, save_path="results/distribution.png")
 
 def plot_anomaly_rates(df, save_path="results/anomaly_rates.png"):
     """
-    Biểu đồ 4 — Taux d'anomalies par variable
-    So sánh tỷ lệ anomalie khi normal vs attaque
+    Graphique 4 — Taux d'anomalies par variable
+    Compare le taux d'anomalie en situation normale vs attaque.
     """
 
     variables = ["C", "D", "A", "P"]
@@ -148,11 +148,11 @@ def plot_anomaly_rates(df, save_path="results/anomaly_rates.png"):
         "P\n(Pseudorange)"
     ]
 
-    # Tính tỷ lệ anomalie
+    # Calcul du taux d'anomalie
     rates_normal = [df[df["S"]==0][v].mean()*100 for v in variables]
     rates_attack = [df[df["S"]==1][v].mean()*100 for v in variables]
 
-    # Giá trị CPT kỳ vọng (đường ngang)
+    # Valeurs CPT attendues (lignes horizontales)
     cpt_normal = [5, 3, 2, 4]
     cpt_attack = [90, 70, 40, 65]
 
@@ -208,31 +208,31 @@ def plot_anomaly_rates(df, save_path="results/anomaly_rates.png"):
 
 
 # ─────────────────────────────────────────
-# CHẠY KHI GỌI TRỰC TIẾP
+# EXÉCUTION DIRECTE
 # ─────────────────────────────────────────
 if __name__ == "__main__":
 
     print("=== Génération des visualisations ===\n")
 
-    # Bước 1 — Xây dựng mô hình
+    # Étape 1 — Construction du modèle
     print("Étape 1 : Construction du modèle...")
     model, inference = build_model()
 
-    # Bước 2 — Tạo dataset
+    # Étape 2 — Génération du dataset
     print("\nÉtape 2 : Génération du dataset...")
     df = generate_dataset()
 
-    # Bước 3 — Inference
+    # Étape 3 — Inférence
     print("\nÉtape 3 : Inférence...")
     y_proba = predict_proba(inference, df)
     y_pred  = (y_proba > 0.5).astype(int)
     y_true  = df["S"].values
 
-    # Bước 4 — Evaluation
+    # Étape 4 — Évaluation
     print("\nÉtape 4 : Évaluation...")
     results = evaluate(y_true, y_pred, y_proba)
 
-    # Bước 5 — Visualisations
+    # Étape 5 — Visualisations
     print("\nÉtape 5 : Génération des graphiques...")
     plot_roc_curve(results)
     plot_confusion_matrix(results)

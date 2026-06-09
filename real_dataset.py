@@ -5,7 +5,7 @@ from sklearn.metrics import roc_curve
 
 
 def find_optimal_threshold(y_true, scores):
-    """Threshold tối ưu theo Youden Index: J = TPR - FPR"""
+    """Seuil optimal selon l'indice de Youden : J = TPR - FPR."""
     fpr, tpr, thresholds = roc_curve(y_true, scores)
     idx = np.argmax(tpr - fpr)
     return thresholds[idx]
@@ -79,7 +79,7 @@ def load_real_dataset(
 
 
 def compare_datasets(df_sim, df_real):
-    """Tableau comparatif simulé vs réel"""
+    """Tableau comparatif simulé vs réel."""
 
     print("\n=== Comparaison Simulé vs Réel ===\n")
     print(f"{'Variable':<10} {'Sim Normal':>11} {'Réel Normal':>12} "

@@ -91,7 +91,7 @@ Projet_TER/
 Vérifier Python :
 
 ```powershell
-python3 --version
+python --version
 ```
 
 ---
@@ -107,7 +107,7 @@ cd D:\Projet_TER
 ### 2. (Recommandé) Créer un environnement virtuel
 
 ```powershell
-python3 -m venv .venv
+python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
 
@@ -117,8 +117,8 @@ python3 -m venv .venv
 ### 3. Installer les dépendances
 
 ```powershell
-python3 -m pip install --upgrade pip
-python3 -m pip install -r requirements.txt
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
 ```
 
 Dépendances principales : `pgmpy`, `numpy`, `pandas`, `openpyxl`, `matplotlib`, `scikit-learn`, `seaborn`.
@@ -142,7 +142,7 @@ Sans ce fichier, seuls `main.py`, `model.py`, `dataset.py` et `evaluation.py` fo
 ### Pipeline complet (données simulées)
 
 ```powershell
-python3 main.py
+python main.py
 ```
 
 Génère : `data/dataset.csv`, `results/results.txt`, graphiques dans `results/`.
@@ -150,7 +150,7 @@ Génère : `data/dataset.csv`, `results/results.txt`, graphiques dans `results/`
 ### Vérifier le modèle seul
 
 ```powershell
-python3 model.py
+python model.py
 ```
 
 Affiche les scénarios de validation (section 4.5 du rapport) :
@@ -162,22 +162,22 @@ Affiche les scénarios de validation (section 4.5 du rapport) :
 
 ```powershell
 # Dataset simulé seul
-python3 dataset.py
+python dataset.py
 
 # Évaluation simulée seule
-python3 evaluation.py
+python evaluation.py
 
 # Préparer le dataset réel
-python3 real_dataset.py
+python real_dataset.py
 
 # Simulé vs réel
-python3 evaluate_real.py
+python evaluate_real.py
 
 # Comparaison 3 approches (simulé / réel+manuel / réel+MLE)
-python3 evaluate_mle.py
+python evaluate_mle.py
 
 # Gaussian BN sur données continues
-python3 gaussian_bn.py
+python gaussian_bn.py
 ```
 
 ### Résultats typiques (indicatifs)

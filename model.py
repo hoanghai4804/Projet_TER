@@ -6,8 +6,8 @@ from pgmpy.inference import VariableElimination
 
 def build_model():
     """
-    Xây dựng mạng Bayesian cho bài toán
-    phát hiện GPS Spoofing trên UAV.
+    Construit le réseau bayésien pour la détection
+    d'attaques GPS Spoofing sur UAV.
 
     DAG: S → {C, D, A, P}
     S = Spoofing (variable cachée)
@@ -17,7 +17,7 @@ def build_model():
     P = Saut de Pseudorange
     """
 
-    # ── Cấu trúc DAG ──────────────────────────
+    # ── Structure du DAG ──────────────────────
     model = DiscreteBayesianNetwork([
         ("S", "C"),
         ("S", "D"),

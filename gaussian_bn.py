@@ -46,7 +46,7 @@ def load_continuous_dataset(
     X = df_bal[features].values
     y = df_bal["S"].values
 
-    print(f"✅ Dataset chargé : {len(df_bal)} échantillons")
+    print(f" Dataset chargé : {len(df_bal)} échantillons")
     print(f"   Features (continues) : {features}")
 
     return X, y, features
@@ -146,7 +146,7 @@ def gaussian_bayes_test():
     os.makedirs("results", exist_ok=True)
     plt.savefig("results/roc_gaussian.png", dpi=150)
     plt.close()
-    print("\n✅ ROC Gaussian sauvegardée : results/roc_gaussian.png")
+    print("\n ROC Gaussian sauvegardée : results/roc_gaussian.png")
 
     return {
         "accuracy": acc,
@@ -203,4 +203,4 @@ if __name__ == "__main__":
     results = gaussian_bayes_test()
     compare_all(results)
 
-    print("\n✅ Test terminé !")
+    print("\n Test terminé !")
